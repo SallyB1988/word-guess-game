@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./assets/css/reset.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="./assets/css/style.css">
+  
+  <title>HangMan</title>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <h1 id="random-word">Word</h1>
+      <hr>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h1 id="current-word"></h1>
+        <h2>Games Won:  <span id="games-won">0</span></h2>
+        <h2>Games Lost:  <span id="games-lost">0</span></h2>
+        <button type="button" class="btn btn-primary btn-sm" onclick="getNewWord()">Start</button>
+      </div>
+      <div class="col-md-6">
+        <hr>
+        <h2>Letters Guessed:</h2>
+        <p id="guessed-letters"></p>
+      </div>
+      <div>
+        <h2 id="game-over"></h2>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="./assets/javascript/game.js"></script>
+</body>
+</html>
