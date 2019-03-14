@@ -1,4 +1,4 @@
-#Hangman Game
+# Hangman Game
 
 This file is the standard Hangman game.  The letters of a puzzle word are all replaced with the **_** symbol. Type in letters. If they exist in the puzzle word, the will appear in the proper place(s). If you guess wrong, the letter is added to the "missed letter" list and the image is updated to show the fate of the poor man in the gallows.
 
