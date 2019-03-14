@@ -4,36 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Diplomata" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/reset.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;lang=en" />
   
   <title>HangMan</title>
 </head>
 <body>
-  <div class="container mt-5">
+  <div class="container my-5">
     <div class="welcome ">
 
       <div class="row"> <!-- title -->
         <div class="col-md-3"></div>
-        <div class="col-md-6 mb-2 title">Welcome to Hangman!</div>
+        <div class="col-md-6 py-4 text-center font-weight-bold title">HANGMAN</div>
       </div>
       <div class="row pb-4"> <!-- instructions -->
           <div class="col-md-4"></div>
           <div class="column-md-4">
-            <p class="column-md-4 px-5 mx-5 text-center instructions">Type in letter and try to guess the word. Solve the puzzle with fewer than SIX wrong guesses and you'll SURVIVE!</p>
-            <button id="start-btn" type="button" class="btn btn-primary btn-lg d-block mx-auto" onclick="getNewWord()">Start</button>
+            <p class="column-md-4 px-5 mx-5  font-weight-bold text-center instructions">Type in letters and try to guess the word. Solve the puzzle with fewer than SIX wrong guesses and you'll SURVIVE!</p>
           </div>
       </div>
     </div>
-    <div class="row p-5"> <!-- image, word and letters -->
+    <div class="row p-5 my-3"> <!-- image, word and letters -->
       <div class="col-md-4">
         <img id="hangman" class="w-75 p-3 border-danger" src="./assets/images/hangman.jpg">
       </div>
       <div class="col-md-8">
-        <h1 id="current-word" class="font-weight-bold h-25"></h1>
-        <h2 class="font-weight-bold">Letters Guessed:</h2>
-        <p id="guessed-letters"></p>
+        <h2 class="text-center font-weight-bold pb-3">THEME:  VEGETABLES</h2>
+        <h1 id="current-word" class="text-center font-weight-bold h-auto"></h1>
+        <h2 class="font-weight-bold w-75 py-2">Letters Guessed:</h2>
+        <p id="guessed-letters">&nbsp</p>
       </div>
     </div>
 

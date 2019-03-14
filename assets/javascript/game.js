@@ -7,7 +7,7 @@ var solution;
 var gamesLost=0;
 var gamesWon=0;
 const maxMisses = 6;
-var words = ['guitar and me', 'tornado and', 'hey pickles', 'hideous', 'banana'];
+var words = ['potato', 'zucchini', 'peas', 'broccoli', 'yellow squash', 'green beans'];
 // NOTE: The relative paths here are with respect to the location
 //       of the index.html file because that is where the <img> is 
 //       located.
@@ -48,6 +48,9 @@ function getNewWord() {
   var hangImage = document.getElementById('hangman');
   hangImage.src = hangmanImages[0];
 }
+
+getNewWord();
+
 
 /**
  * Checks if letter is in the solution word. If so, the displayed
@@ -98,15 +101,19 @@ function endGame() {
  * Displays and game over message.
  * Clears the wrongGuessedLetters array. 
  */
-function resetGame(prevword) {
+function resetGame(prevword,wordsleft) {
   var msg="";
-  
+  var endmsg="";
+  if (wordsleft === 0) {
+    endmsg = "You have finished all of the words."
+  }
+
   if (wrongGuessedLetters.length === maxMisses) {
     msg = "You Lost!";
     gamesLost++;
-    document.getElementById("show-solution").innerHTML=`<h2>The word was ${prevword}</h2>`;
+    document.getElementById("show-solution").innerHTML=`<div>${msg}</div><h2>The word was ${prevword}</h2><hr>`;
     document.getElementById("games-lost-message").innerHTML=gamesLost;
-    document.getElementById("endgame-message").innerHTML=msg;
+    document.getElementById("endgame-message").innerHTML=`<div>${endmsg}</div>`;
     var endImage = document.getElementById('hangman-modal');
     endImage.src = "assets/images/hangman6.jpg";
   } else {
@@ -114,10 +121,9 @@ function resetGame(prevword) {
     gamesWon++;
     document.getElementById("show-solution").innerHTML=null;
     var endImage = document.getElementById('hangman-modal');
-    endImage.src = "assets/images/happy.jpg";
-    // document.getElementById("hangman-modal").innerHTML=null;
+    endImage.src = "assets/images/won.jpg";
     document.getElementById("games-won-message").innerHTML=gamesWon;
-    document.getElementById("endgame-message").innerHTML=msg;
+    document.getElementById("endgame-message").innerHTML=`<div>${msg}</div><hr><div>${endmsg}</div>`;
   }
 }
 
@@ -153,9 +159,10 @@ document.onkeyup = function(event) {
     // the wrong thing for the word that was missed.  (It actually displayed the
     // NEXT word that the player was supposed to guess.)
     const finalword = solution;
+    const wordsleft = words.length;
     if (endGame()) {
       $(document).ready(function(){
-        resetGame(finalword);
+        resetGame(finalword, wordsleft);
         $("#game-over").modal();
         refreshScreen();
       })

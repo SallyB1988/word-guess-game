@@ -1,5 +1,6 @@
 body {
   background-image: url("../images/background.jpg");
+  opacity: .8;
 }
 
 .btn-primary {
@@ -14,9 +15,8 @@ body {
 }
 
 .title {
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family:  'Diplomata', cursive;
   font-size: 40px;
-  text-align: center;
 }
 
 .welcome {
@@ -42,13 +42,14 @@ body {
   font-size: 40px;
   background-color:  rgba(190, 181, 163, 0.534);
   text-align: center;
+  overflow-wrap: break-word;
   padding-bottom:  10px;
   border: 2px black solid;
 }
 #guessed-letters {
   font-size: 50px;
   font-weight: bold;
-  color: rgba(107, 47, 13, 0.993);
+  color: rgba(65, 36, 19, 0.993);
 };
 
 #endgame-message {
