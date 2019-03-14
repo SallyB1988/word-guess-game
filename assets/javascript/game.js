@@ -22,7 +22,7 @@ var hangmanImages = [
 ]
 
 /**
- * Selects a random word from the words array. Pops that word out of
+ * Returns a random word from the words array. Pops that word out of
  * the array so it won't be reused.
  */
 function getRandomWord() {
@@ -38,13 +38,12 @@ function getRandomWord() {
 function getNewWord() {
   solution = getRandomWord();
   var solutionWords = solution.split(" ");
+  // This mapping allows for multiple words in the hangman puzzle.
   currentWord = solutionWords.map((w) => {
     var tempArr = Array(w.length).fill('_ ');
     tempArr.push('&nbsp&nbsp');
     return tempArr;
   }).flat();
-  // currentWord = Array(solution.length).fill('_ '); 
-  console.log(currentWord);
   document.getElementById("current-word").innerHTML = currentWord.join('');
   var hangImage = document.getElementById('hangman');
   hangImage.src = hangmanImages[0];
@@ -99,26 +98,27 @@ function endGame() {
  * Displays and game over message.
  * Clears the wrongGuessedLetters array. 
  */
-function resetGame() {
+function resetGame(prevword) {
   var msg="";
   
   if (wrongGuessedLetters.length === maxMisses) {
     msg = "You Lost!";
     gamesLost++;
-    document.getElementById("show-solution").innerHTML=`<h2>The word was ${solution}</h2>`;
+    document.getElementById("show-solution").innerHTML=`<h2>The word was ${prevword}</h2>`;
     document.getElementById("games-lost-message").innerHTML=gamesLost;
     document.getElementById("endgame-message").innerHTML=msg;
+    var endImage = document.getElementById('hangman-modal');
+    endImage.src = "assets/images/hangman6.jpg";
   } else {
     msg = "Congratulations!";
     gamesWon++;
     document.getElementById("show-solution").innerHTML=null;
     var endImage = document.getElementById('hangman-modal');
     endImage.src = "assets/images/happy.jpg";
-    document.getElementById("hangman-modal").innerHTML=null;
+    // document.getElementById("hangman-modal").innerHTML=null;
     document.getElementById("games-won-message").innerHTML=gamesWon;
     document.getElementById("endgame-message").innerHTML=msg;
   }
-
 }
 
 /**
@@ -145,15 +145,22 @@ document.onkeyup = function(event) {
     } else {
       document.getElementById("current-word").innerHTML = currentWord.join('');
     }
-    if (endGame()) {
 
+    // Note to self: Something asynchronous was going on here, so I had to save the solution
+    // word in a variable and then npass it to the resetGame function instead of
+    // just using the value that was stored in 'solution'. Solution was being updated
+    // prior to the end of game display and when the player lost, it was showing
+    // the wrong thing for the word that was missed.  (It actually displayed the
+    // NEXT word that the player was supposed to guess.)
+    const finalword = solution;
+    if (endGame()) {
       $(document).ready(function(){
-        resetGame();
+        resetGame(finalword);
         $("#game-over").modal();
         refreshScreen();
-      });
-      
-      getNewWord();
+      })
+
+    getNewWord();
 
     }
   };
