@@ -1,5 +1,60 @@
-#guessed-letters {
-  font-size: 20px;
+body {
+  background-image: url("../images/background.jpg");
+}
+
+.btn-primary {
+  background-color:  rgb(85, 46, 10);
+  border-color: rgb(85, 46, 10);
+}
+
+.container {
+  background: url("../images/western.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.title {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 40px;
+  text-align: center;
+}
+
+.welcome {
+  width:  100%;
+  background-color: rgba(221, 210, 185, 0.466);
+}
+.instructions {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 26px;
+}
+
+.modal-title {
+  background-color: rgba(236, 214, 151, 0.973) !important;
+  text-align: center !important;
   font-weight: bold;
-  color: rgb(207, 30, 39);
+}
+
+.modal-content {
+  background-color: rgba(236, 214, 151, 0.973) !important;
+}
+ 
+#current-word {
+  font-size: 40px;
+  background-color:  rgba(190, 181, 163, 0.534);
+  text-align: center;
+  padding-bottom:  10px;
+  border: 2px black solid;
+}
+#guessed-letters {
+  font-size: 50px;
+  font-weight: bold;
+  color: rgba(107, 47, 13, 0.993);
+};
+
+#endgame-message {
+  text-align: center;
+}
+
+#games-won-message, #games-lost-message {
+  padding-left: 15px;
 }

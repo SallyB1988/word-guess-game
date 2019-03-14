@@ -1,14 +1,25 @@
 var letter;
-var currentWord=[];
-var guessedLetters=[];
+var currentWord=[]; // array of current word as letters are guessed
+var wrongGuessedLetters=[];  //
 var allGuessedLetters=[];
 var containsLetter=false;
 var solution;
 var gamesLost=0;
 var gamesWon=0;
-const maxMisses = 10;
-var words = ['guitar', 'tornado', 'pickles', 'hideous', 'banana'];
-
+const maxMisses = 6;
+var words = ['guitar and me', 'tornado and', 'hey pickles', 'hideous', 'banana'];
+// NOTE: The relative paths here are with respect to the location
+//       of the index.html file because that is where the <img> is 
+//       located.
+var hangmanImages = [
+  'assets/images/hangman.jpg',
+  'assets/images/hangman1.jpg',
+  'assets/images/hangman2.jpg',
+  'assets/images/hangman3.jpg',
+  'assets/images/hangman4.jpg',
+  'assets/images/hangman5.jpg',
+  'assets/images/hangman6.jpg',
+]
 
 /**
  * Selects a random word from the words array. Pops that word out of
@@ -16,8 +27,9 @@ var words = ['guitar', 'tornado', 'pickles', 'hideous', 'banana'];
  */
 function getRandomWord() {
   var randIndex = Math.floor(Math.random()*words.length);
-  document.getElementById("random-word").innerHTML = words[randIndex];
-  return words[randIndex];
+  var word = words[randIndex];
+  words.splice(randIndex,1);
+  return word;
 }
 
 /**
@@ -25,8 +37,17 @@ function getRandomWord() {
  */
 function getNewWord() {
   solution = getRandomWord();
-  currentWord = Array(solution.length).fill('_ '); 
+  var solutionWords = solution.split(" ");
+  currentWord = solutionWords.map((w) => {
+    var tempArr = Array(w.length).fill('_ ');
+    tempArr.push('&nbsp&nbsp');
+    return tempArr;
+  }).flat();
+  // currentWord = Array(solution.length).fill('_ '); 
+  console.log(currentWord);
   document.getElementById("current-word").innerHTML = currentWord.join('');
+  var hangImage = document.getElementById('hangman');
+  hangImage.src = hangmanImages[0];
 }
 
 /**
@@ -39,13 +60,13 @@ function updateWord(letter) {
   var containsLetter = true;
 
   if (solution.indexOf(letter) < 0) {
-    containsLetter=false;
+    containsLetter=false; // word does not contain the letter entered
     return;
-  } else {
+  } else {  // word contains the letter entered
     for (var i=0; i < solution.length; i++)
     {
       if (letter === solution[i]){
-        currentWord[i] = letter.toUpperCase();
+        currentWord[i] = letter.toUpperCase(); // replace dash with current letter
       }
     }
   }
@@ -53,10 +74,19 @@ function updateWord(letter) {
 }
 
 /**
+ * Resets screen back to starting point.
+ */
+function refreshScreen() {
+  wrongGuessedLetters = [];
+  allGuessedLetters = [];
+  document.getElementById("guessed-letters").innerHTML=wrongGuessedLetters.join(' ');
+}
+
+/**
  * End game if max number of misses is reached or if word has been solved.
  */
 function endGame() {
-  if ((guessedLetters.length >= maxMisses) || (currentWord.indexOf('_ ') === -1) ) {
+  if ((wrongGuessedLetters.length >= maxMisses) || (currentWord.indexOf('_ ') === -1) ) {
     return true;
   } else {
     return false;
@@ -67,25 +97,34 @@ function endGame() {
  * Checks if game was won or lost and increments the corresponding
  * counter (gamesWon or gamesLost).
  * Displays and game over message.
- * Clears the guessedLetters array. 
+ * Clears the wrongGuessedLetters array. 
  */
 function resetGame() {
   var msg="";
-  if (guessedLetters.length === maxMisses) {
-    msg = "Sorry you lost. The word was: " + solution;
+  
+  if (wrongGuessedLetters.length === maxMisses) {
+    msg = "You Lost!";
     gamesLost++;
-    document.getElementById("games-lost").innerHTML=gamesLost;
-    document.getElementById("game-over").innerHTML=msg;
+    document.getElementById("show-solution").innerHTML=`<h2>The word was ${solution}</h2>`;
+    document.getElementById("games-lost-message").innerHTML=gamesLost;
+    document.getElementById("endgame-message").innerHTML=msg;
   } else {
     msg = "Congratulations!";
     gamesWon++;
-    document.getElementById("games-won").innerHTML=gamesWon;
-    document.getElementById("game-over").innerHTML=msg;
+    document.getElementById("show-solution").innerHTML=null;
+    var endImage = document.getElementById('hangman-modal');
+    endImage.src = "assets/images/happy.jpg";
+    document.getElementById("hangman-modal").innerHTML=null;
+    document.getElementById("games-won-message").innerHTML=gamesWon;
+    document.getElementById("endgame-message").innerHTML=msg;
   }
-  guessedLetters = [];
-  allGuessedLetters = [];
+
 }
 
+/**
+ * Returns true if a valid key (a-z) has been passed in.
+ * @param {*} k -- single letter
+ */
 function validKey(k) {
   const validLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   return validLetters.indexOf(k.toUpperCase()) === -1 ? false: true;
@@ -93,20 +132,30 @@ function validKey(k) {
 
 document.onkeyup = function(event) {
   letter = event.key;
-  console.log(validKey(letter));
+  // Execute the following 'if' statement if the letter is valid and if it
+  // has not already been guessed.
   if (!allGuessedLetters.includes(letter.toUpperCase()) && validKey(letter)) {
     allGuessedLetters.push(letter.toUpperCase());
     goodGuess = updateWord(letter);
     if (!goodGuess) {
-      guessedLetters.push(letter.toUpperCase());
-      document.getElementById("guessed-letters").innerHTML=guessedLetters.join(' ');
+      wrongGuessedLetters.push(letter.toUpperCase());
+      document.getElementById("guessed-letters").innerHTML=wrongGuessedLetters.join(' ');
+      var hangImage = document.getElementById('hangman');
+      hangImage.src = hangmanImages[wrongGuessedLetters.length];
     } else {
       document.getElementById("current-word").innerHTML = currentWord.join('');
-  
     }
     if (endGame()) {
-      resetGame();
+
+      $(document).ready(function(){
+        resetGame();
+        $("#game-over").modal();
+        refreshScreen();
+      });
+      
       getNewWord();
+
     }
   };
 };
+
